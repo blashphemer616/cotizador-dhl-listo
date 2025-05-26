@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obtener una Cotización de Envío Internacional en Línea Gratuito - DHL - México</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDway_PhmGTt3kWqFXO1DH78VWwVKtBQDc&libraries=places&callback=initAutocomplete" async defer></script>
+    <style>
+        :root {
+            --dhl-yellow: #FFCC00;
+            --dhl-red: #D40511;
+            --dhl-dark: #222;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .dhl-header {
+            background: linear-gradient(135deg, var(--dhl-red), var(--dhl-yellow));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .dhl-logo {
+            height: 60px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-dhl {
+            background-color: var(--dhl-red);
+            color: white;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-dhl:hover {
+            background-color: #b30000;
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            border-left: 5px solid var(--dhl-yellow);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .package-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--dhl-red);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dhl-dark);
+        }
+
+        /* Estilos para los mapas */
+        .map-container {
+            height: 300px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #map-ruta {
+            /* Cambiamos los estilos para el nuevo mapa */
+            height: 100%;
+            width: 100%;
+        }
+
+        .maps-row {
+            margin-top: 20px;
+        }
+
+        .map-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dhl-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid bg-dark">
+        <div class="row py-2 px-lg-5">
+            <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center text-white">
+                    <small><i class="fa fa-phone-alt mr-2"></i> 53457000</small>
+                    <small class="px-3">|</small>
+                    <small><i class="fa fa-envelope mr-2"></i> dpdhl@dhl.com</small>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-white px-2" href="https://www.facebook.com/DHLMX/?locale=es_LA">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="text-white px-2" href="https://x.com/dhlmexayuda?lang=es">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a class="text-white px-2" href="https://mx.linkedin.com/company/dhl-express-mexico">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a class="text-white px-2" href="https://www.instagram.com/dhlmex/">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="text-white pl-2" href="https://www.youtube.com/dhlmexicooficial">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg navbar-light py-3 py-lg-0 px-lg-5" style="background-color: #FFCC00;">
+            <a href="index.html" class="navbar-brand ml-lg-3">
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav m-auto py-0">
+                    <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                    <a href="about.html" class="nav-item nav-link">Acerca de Nosotros</a>
+                    <a href="service.html" class="nav-item nav-link">Servicios</a>
+                    <a href="price.html" class="nav-item nav-link">Precios</a>
+                    <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                </div>
+                <a href="" class="btn btn-dhl py-2 px-4 d-none d-lg-block">Obtener una cotización</a>
+                
+            </div>
+        </nav>
+    </div>
+    <div class="container py-5">
+
+
+        <div class="form-container p-4 mb-5">
+            <form id="cotizadorForm" class="row g-4">
+                <div class="col-md-6">
+                    <label for="tipoPaquete" class="form-label">
+                        <i class="fas fa-box-open package-icon"></i>Tipo de Paquete *
+                    </label>
+                    <select class="form-select" id="tipoPaquete" required>
+                        <option value="" selected disabled>Seleccione...</option>
+                        <option value="sobre">Sobre (10gr-500gr) - $20</option>
+                        <option value="caja">Caja (501gr-20kg) - $100</option>
+                        <option value="tarima">Tarima (21kg-50kg) - $500</option>
+                        <option value="contenedor">Contenedor (51kg-5,000kg) - $600/50kg</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="peso" class="form-label">
+                        <i class="fas fa-weight-hanging package-icon"></i>Peso (kg) *
+                    </label>
+                    <input type="number" class="form-control" id="peso" step="0.01" min="0.01" required>
+                </div>
+
+                <div class="col-12">
+                    <h5 class="mb-3"><i class="fas fa-ruler-combined me-2"></i>Dimensiones (cm)</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="ancho" class="form-label">Ancho *</label>
+                            <input type="number" class="form-control" id="ancho" min="1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="alto" class="form-label">Alto *</label>
+                            <input type="number" class="form-control" id="alto" min="1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="fondo" class="form-label">Fondo *</label>
+                            <input type="number" class="form-control" id="fondo" min="1" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="origen" class="form-label">
+                        <i class="fas fa-map-marker-alt package-icon"></i>Origen *
+                    </label>
+                    <input type="text" class="form-control" id="origen" placeholder="Ingrese dirección de origen" required>
+                    <small class="text-muted">Comience a escribir y seleccione una dirección del listado</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="destino" class="form-label">
+                        <i class="fas fa-map-marked-alt package-icon"></i>Destino *
+                    </label>
+                    <input type="text" class="form-control" id="destino" placeholder="Ingrese dirección de destino" required>
+                    <small class="text-muted">Comience a escribir y seleccione una dirección del listado</small>
+                </div>
+
+                <div class="col-12 maps-row">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="map-title">Ruta de Envío</div>
+                            <div class="map-container">
+                                <div id="map-ruta"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="distancia" class="form-label">
+                        <i class="fas fa-route package-icon"></i>Distancia (km) *
+                    </label>
+                    <input type="number" class="form-control" id="distancia" min="1" required>
+                    <small class="text-muted">La distancia se calculará automáticamente entre las ubicaciones</small>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-dhl btn-lg">
+                        <i class="fas fa-calculator me-2"></i>Calcular Costo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="resultado" class="result-card p-4 mb-5 bg-white rounded d-none">
+            <h3 class="mb-4 text-center"><i class="fas fa-file-invoice-dollar me-2"></i>Detalle de la Cotización</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-box me-2"></i> Tipo de Paquete</span>
+                            <span class="badge bg-primary rounded-pill" id="res-tipo">-</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-weight me-2"></i> Peso</span>
+                            <span class="badge bg-primary rounded-pill" id="res-peso">- kg</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-ruler-combined me-2"></i> Volumen</span>
+                            <span class="badge bg-primary rounded-pill" id="res-volumen">- cm³</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-route me-2"></i> Distancia</span>
+                            <span class="badge bg-primary rounded-pill" id="res-distancia">- km</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-tag me-2"></i> Costo Base</span>
+                            <span class="badge bg-success rounded-pill" id="res-base">$0.00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-cube me-2"></i> Costo Volumen</span>
+                            <span class="badge bg-success rounded-pill" id="res-vol">$0.00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-truck me-2"></i> Costo Transporte</span>
+                            <span class="badge bg-success rounded-pill" id="res-transporte">$0.00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="total-container text-center p-3 mt-3" style="background-color: #FFF9C4; border-radius: 8px;">
+                <h4 class="m-0">
+                    <i class="fas fa-dollar-sign me-2"></i>
+                    Total a Pagar: <span id="total" class="fw-bold" style="color: var(--dhl-red);">$0.00</span> MXN
+                </h4>
+            </div>
+
+            <div class="text-center mt-4">
+                <button id="nuevaCotizacion" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-redo me-1"></i> Nueva Cotización
+                </button>
+                <button id="imprimirCotizacion" class="btn btn-outline-primary">
+                    <i class="fas fa-print me-1"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let mapRuta; // Cambiamos los nombres de las variables de mapa
+        let markerOrigen,
+            markerDestino;
+        let autocompleteOrigen,
+            autocompleteDestino;
+        let distanciaService,
+            directionsService,
+            directionsRenderer; // Agregamos variables para las direcciones
+        let direccionOrigen,
+            direccionDestino;
+
+        // Función para inicializar los mapas y autocompletados
+        function initAutocomplete() {
+            // Inicializar el servicio de cálculo de distancia
+            distanciaService = new google.maps.DistanceMatrixService();
+            directionsService = new google.maps.DirectionsService(); // Inicializar el servicio de direcciones
+            directionsRenderer = new google.maps.DirectionsRenderer(); // Inicializar el renderizador de direcciones
+
+            // Configuración inicial del mapa
+            const mapOptions = {
+                center: {
+                    lat: 19.4326,
+                    lng: -99.1332
+                }, // Centro en CDMX
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false
+            };
+
+            // Inicializar mapa
+            mapRuta = new google.maps.Map(document.getElementById("map-ruta"), mapOptions); // Usamos el nuevo ID
+            directionsRenderer.setMap(mapRuta); // Asignar el renderizador al mapa
+
+            // Crear marcadores
+            markerOrigen = new google.maps.Marker({
+                map: mapRuta,
+                draggable: true,
+                title: "Origen",
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+            });
+
+            markerDestino = new google.maps.Marker({
+                map: mapRuta,
+                draggable: true,
+                title: "Destino",
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                }
+            });
+
+            // Configurar autocompletado para los campos de dirección
+            autocompleteOrigen = new google.maps.places.Autocomplete(
+                document.getElementById("origen"), {
+                    types: ["geocode"]
+                }
+            );
+
+            autocompleteDestino = new google.maps.places.Autocomplete(
+                document.getElementById("destino"), {
+                    types: ["geocode"]
+                }
+            );
+
+            // Asignar eventos para cuando se selecciona una dirección
+            autocompleteOrigen.addListener("place_changed", function() {
+                const place = autocompleteOrigen.getPlace();
+                if (!place.geometry) {
+                    alert("No se encontró la ubicación: '" + place.name + "'");
+                    return;
+                }
+                direccionOrigen = place;
+                updateMap(mapRuta, markerOrigen, place); // Usamos el mapa único
+                calcularRuta(); // Llamamos a calcularRuta en lugar de calcularDistancia
+            });
+
+            autocompleteDestino.addListener("place_changed", function() {
+                const place = autocompleteDestino.getPlace();
+                if (!place.geometry) {
+                    alert("No se encontró la ubicación: '" + place.name + "'");
+                    return;
+                }
+                direccionDestino = place;
+                updateMap(mapRuta, markerDestino, place); // Usamos el mapa único
+                calcularRuta(); // Llamamos a calcularRuta en lugar de calcularDistancia
+            });
+
+            // Eventos para cuando se arrastra el marcador
+            markerOrigen.addListener("dragend", function() {
+                updateDireccionDesdeMarcador(markerOrigen, "origen");
+                calcularRuta(); // Llamamos a calcularRuta en lugar de calcularDistancia
+            });
+
+            markerDestino.addListener("dragend", function() {
+                updateDireccionDesdeMarcador(markerDestino, "destino");
+                calcularRuta(); // Llamamos a calcularRuta en lugar de calcularDistancia
+            });
+        }
+
+        // Actualizar mapa cuando se selecciona una dirección
+        function updateMap(map, marker, place) {
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+            marker.setPosition(place.geometry.location);
+        }
+
+        // Actualizar campo de dirección cuando se mueve el marcador
+        function updateDireccionDesdeMarcador(marker, campoId) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                location: marker.getPosition()
+            }, function(results, status) {
+                if (status === "OK" && results[0]) {
+                    document.getElementById(campoId).value = results[0].formatted_address;
+                    if (campoId === "origen") {
+                        direccionOrigen = {
+                            geometry: {
+                                location: marker.getPosition()
+                            }
+                        };
+                    } else {
+                        direccionDestino = {
+                            geometry: {
+                                location: marker.getPosition()
+                            }
+                        };
+                    }
+                }
+            });
+        }
+
+        // Calcular y mostrar la ruta entre origen y destino
+        function calcularRuta() {
+            if (!direccionOrigen || !direccionDestino) return;
+
+            directionsService.route({
+                origin: direccionOrigen.geometry.location,
+                destination: direccionDestino.geometry.location,
+                travelMode: 'DRIVING'
+            }, function(response, status) {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(response);
+                    // Actualizar el campo de distancia (sin decimales)
+                    document.getElementById("distancia").value = Math.floor(response.routes[0].legs[0].distance.value / 1000);
+                } else {
+                    console.error('Error al calcular la ruta:', status);
+                    alert('No se pudo calcular la ruta.');
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Variables globales
+            const cotizadorForm = document.getElementById("cotizadorForm");
+            const resultadoSection = document.getElementById("resultado");
+            const nuevaCotizacionBtn = document.getElementById("nuevaCotizacion");
+            const imprimirBtn = document.getElementById("imprimirCotizacion");
+
+            // Event Listeners
+            cotizadorForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                calcularCotizacion();
+
+            });
+
+            nuevaCotizacionBtn.addEventListener("click", resetearFormulario);
+            imprimirBtn.addEventListener("click", imprimirCotizacion);
+
+            // Función principal de cálculo
+            function calcularCotizacion() {
+                // Obtener valores del formulario
+                const tipoPaquete = document.getElementById("tipoPaquete").value;
+                const peso = parseFloat(document.getElementById("peso").value);
+                const ancho = parseFloat(document.getElementById("ancho").value);
+                const alto = parseFloat(document.getElementById("alto").value);
+                const fondo = parseFloat(document.getElementById("fondo").value);
+                const distancia = parseFloat(document.getElementById("distancia").value);
+
+                // Validar datos
+                if (!validarDatos(tipoPaquete, peso, ancho, alto, fondo, distancia)) {
+                    return;
+                }
+
+                // Calcular componentes del costo
+                const volumen = calcularVolumen(ancho, alto, fondo);
+                const costoBase = calcularCostoBase(tipoPaquete, peso);
+                const costoVolumen = calcularCostoVolumen(volumen);
+                const costoTransporte = calcularCostoTransporte(distancia);
+                const total = costoBase + costoVolumen + costoTransporte;
+
+                // Mostrar resultados
+                mostrarResultados(tipoPaquete, peso, volumen, distancia, costoBase, costoVolumen, costoTransporte, total);
+                // Guardar cotización en la base de datos
+                fetch("cotizacion.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            tipo_paquete: tipoPaquete,
+                            peso: peso,
+                            ancho: ancho,
+                            alto: alto,
+                            fondo: fondo,
+                            volumen: volumen,
+                            origen: document.getElementById("origen").value,
+                            destino: document.getElementById("destino").value,
+                            distancia: distancia,
+                            costo_base: costoBase,
+                            costo_volumen: costoVolumen,
+                            costo_transporte: costoTransporte,
+                            total: total
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Cotización guardada exitosamente");
+                        } else {
+                            console.error("Error al guardar la cotización");
+                        }
+                    });
+
+            }
+
+            // Funciones de apoyo
+            function validarDatos(tipoPaquete, peso, ancho, alto, fondo, distancia) {
+                // Validar dirección de origen y destino
+                if (!direccionOrigen || !direccionDestino) {
+                    mostrarError("Por favor seleccione direcciones válidas para origen y destino");
+                    return false;
+                }
+
+                // Validar peso según tipo de paquete
+                if (isNaN(peso)) {
+                    mostrarError("Ingrese un peso válido");
+                    return false;
+                }
+
+                switch (tipoPaquete) {
+                    case "sobre":
+                        if (peso < 0.01 || peso > 0.5) {
+                            mostrarError("El peso para sobres debe estar entre 0.01kg y 0.5kg");
+                            return false;
+                        }
+                        break;
+                    case "caja":
+                        if (peso <= 0.5 || peso > 20) {
+                            mostrarError("El peso para cajas debe estar entre 0.501kg y 20kg");
+                            return false;
+                        }
+                        break;
+                    case "tarima":
+                        if (peso <= 20 || peso > 50) {
+                            mostrarError("El peso para tarimas debe estar entre 21kg y 50kg");
+                            return false;
+                        }
+                        break;
+                    case "contenedor":
+                        if (peso <= 50 || peso > 5000) {
+                            mostrarError("El peso para contenedores debe estar entre 51kg y 5,000kg");
+                            return false;
+                        }
+                        break;
+                    default:
+                        mostrarError("Seleccione un tipo de paquete válido");
+                        return false;
+                }
+
+                // Validar dimensiones
+                if (isNaN(ancho) || isNaN(alto) || isNaN(fondo)) {
+                    mostrarError("Ingrese dimensiones válidas");
+                    return false;
+                }
+
+                if (ancho <= 0 || alto <= 0 || fondo <= 0) {
+                    mostrarError("Las dimensiones deben ser mayores a cero");
+                    return false;
+                }
+
+                // Validar distancia
+                if (isNaN(distancia) || distancia <= 0) {
+                    mostrarError("Ingrese una distancia válida");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function mostrarError(mensaje) {
+                alert("Error: " + mensaje);
+            }
+
+            function calcularVolumen(ancho, alto, fondo) {
+                return ancho * alto * fondo;
+            }
+
+            function calcularCostoBase(tipoPaquete, peso) {
+                switch (tipoPaquete) {
+                    case "sobre":
+                        return 20;
+                    case "caja":
+                        return 100;
+                    case "tarima":
+                        return 500;
+                    case "contenedor":
+                        return Math.ceil(peso / 50) * 600;
+                    default:
+                        return 0;
+                }
+            }
+
+            function calcularCostoVolumen(volumen) {
+                return volumen * 0.0001; // $0.0001 por cm³
+            }
+
+            function calcularCostoTransporte(distancia) {
+                return distancia * 10; // $10 por km
+            }
+
+            function mostrarResultados(tipo, peso, volumen, distancia, base, vol, transporte, total) {
+                // Formatear valores para mostrar
+                const tipoTexto = {
+                    "sobre": "Sobre",
+                    "caja": "Caja",
+                    "tarima": "Tarima",
+                    "contenedor": "Contenedor"
+                } [tipo];
+
+                // Actualizar DOM
+                document.getElementById("res-tipo").textContent = tipoTexto;
+                document.getElementById("res-peso").textContent = peso + " kg";
+                document.getElementById("res-volumen").textContent = volumen.toLocaleString() + " cm³";
+                document.getElementById("res-distancia").textContent = Math.floor(distancia) + " km"; // Mostrar distancia sin decimales
+                document.getElementById("res-base").textContent = "$" + base.toFixed(2);
+                document.getElementById("res-vol").textContent = "$" + vol.toFixed(2);
+                document.getElementById("res-transporte").textContent = "$" + transporte.toFixed(2);
+                document.getElementById("total").textContent = "$" + total.toFixed(2);
+
+                // Mostrar sección de resultados
+                resultadoSection.classList.remove("d-none");
+
+                // Scroll a resultados
+                resultadoSection.scrollIntoView({
+                    behavior: "smooth"
+                });
+            }
+
+            function resetearFormulario() {
+                cotizadorForm.reset();
+                resultadoSection.classList.add("d-none");
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+                // Limpiar mapa
+                if (mapRuta) {
+                    mapRuta.setCenter({
+                        lat: 19.4326,
+                        lng: -99.1332
+                    });
+                    mapRuta.setZoom(12);
+                    markerOrigen.setPosition(null);
+                    markerDestino.setPosition(null);
+                    directionsRenderer.setDirections({
+                        routes: []
+                    }); // Limpiar la ruta
+                }
+                direccionOrigen = null;
+                direccionDestino = null;
+            }
+
+            function imprimirCotizacion() {
+                window.print();
+            }
+        });
+    </script>
+    <script>
+document.getElementById('cotizadorForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Obtener valores del formulario siempre
+    const tipo_paquete = document.getElementById('tipoPaquete').value;
+    const peso = parseFloat(document.getElementById('peso').value);
+    const ancho = parseFloat(document.getElementById('ancho').value);
+    const alto = parseFloat(document.getElementById('alto').value);
+    const fondo = parseFloat(document.getElementById('fondo').value);
+    const origen = document.getElementById('origen').value;
+    const destino = document.getElementById('destino').value;
+    const distancia = parseFloat(document.getElementById('distancia').value);
+
+    if (!tipo_paquete || peso <= 0 || ancho <= 0 || alto <= 0 || fondo <= 0 || distancia <= 0 || !origen || !destino) {
+        alert('Por favor completa todos los campos con valores válidos.');
+        return;
+    }
+
+    const volumen = ancho * alto * fondo;
+
+    // Calcular costos de nuevo aquí
+    let costo_base = 0;
+    switch (tipo_paquete) {
+        case 'sobre': costo_base = 20; break;
+        case 'caja': costo_base = 100; break;
+        case 'tarima': costo_base = 500; break;
+        case 'contenedor': costo_base = Math.ceil(peso / 50) * 600; break;
+    }
+
+    const costo_volumen = volumen * 0.0001; // Ajusta precio si quieres (en tu validación estaba 0.0001)
+    const costo_transporte = distancia * 10; // Usando 10 por km como en tus funciones
+    const total = costo_base + costo_volumen + costo_transporte;
+
+    // Enviar al servidor
+    try {
+        const response = await fetch('http://localhost:5000/api/cotizaciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tipo_paquete, peso, ancho, alto, fondo, volumen,
+                origen, destino, distancia,
+                costo_base, costo_volumen, costo_transporte, total
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Cotización guardada correctamente.');
+
+            // Mostrar resultados claros y limpios, siempre con los valores calculados aquí
+            document.getElementById('res-tipo').textContent = tipo_paquete;
+            document.getElementById('res-peso').textContent = `${peso} kg`;
+            document.getElementById('res-volumen').textContent = `${volumen.toLocaleString()} cm³`;
+            document.getElementById('res-distancia').textContent = `${distancia} km`;
+            document.getElementById('res-base').textContent = `$${costo_base.toFixed(2)}`;
+            document.getElementById('res-vol').textContent = `$${costo_volumen.toFixed(2)}`;
+            document.getElementById('res-transporte').textContent = `$${costo_transporte.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+
+            document.getElementById('resultado').classList.remove('d-none');
+            document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+
+        } else {
+            alert('Error al guardar la cotización: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Error al conectar con el servidor:', error);
+        alert('Error de conexión con el servidor.');
+    }
+});
+</script>
+</body>
+
+</html>
