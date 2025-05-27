@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obtener una Cotización de Envío Internacional en Línea Gratuito - DHL - México</title>
@@ -113,6 +114,15 @@
             color: var(--dhl-dark);
         }
     </style>
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4VRHE4ZBC9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4VRHE4ZBC9');
+</script>
 </head>
 
 <body>
@@ -733,9 +743,9 @@ document.getElementById('cotizadorForm').addEventListener('submit', async functi
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                tipo_paquete, peso, ancho, alto, fondo, volumen,
+                id, tipo_paquete, peso, ancho, alto, fondo, volumen,
                 origen, destino, distancia,
-                costo_base, costo_volumen, costo_transporte, total
+                costo_base, costo_volumen, costo_transporte, total, fecha
             })
         });
 
