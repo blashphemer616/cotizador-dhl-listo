@@ -70,11 +70,12 @@ app.post('/api/cotizaciones', async (req, res) => {
 
     } catch (error) {
         console.error('Error al guardar la cotización:', error);
-        res.status(500).json({ success: false, error: 'Error al guardar la cotización.' });
+        // Devuelve el mensaje real del error para facilitar el debug
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor Node.js corriendo en el puerto ${PORT}`);
 });

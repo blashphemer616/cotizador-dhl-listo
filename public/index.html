@@ -729,7 +729,7 @@ document.getElementById('cotizadorForm').addEventListener('submit', async functi
 
     // Enviar al servidor
     try {
-        const response = await fetch('http://localhost:5000/api/cotizaciones', {
+        const response = await fetch('https://cotizador-dhl-listo.onrender.com/api/cotizaciones', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
